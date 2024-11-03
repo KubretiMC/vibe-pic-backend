@@ -1,4 +1,4 @@
-import { Entity, PrimaryGeneratedColumn, Column } from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn } from 'typeorm';
 
 @Entity('images')
 export class Image {
@@ -15,11 +15,11 @@ export class Image {
   imageType: string;
 
   @Column()
-  createdAt: Date;
-
-  @Column()
   likes: number;
 
   @Column()
   imagePath: string;
+
+  @CreateDateColumn({ type: 'timestamp' })
+  createdAt: Date;
 }
