@@ -1,3 +1,7 @@
+## [1.2.0] - 2024-11-03
+- made finding user by id
+- made returning image user uploaders instead of their id
+
 ## [1.1.1] - 2024-10-24
 - images createdAt format fixed to be of type timestamp
 
