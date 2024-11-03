@@ -1,3 +1,6 @@
+## [1.1.1] - 2024-10-24
+- images createdAt format fixed to be of type timestamp
+
 ## [1.1.0] - 2024-10-24
 - users table made
 - architecture changed to feature first
