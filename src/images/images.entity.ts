@@ -1,4 +1,3 @@
-// src/entities/image.entity.ts
 import { Entity, PrimaryGeneratedColumn, Column } from 'typeorm';
 
 @Entity('images')
@@ -13,11 +12,14 @@ export class Image {
   description: string;
 
   @Column()
-  type: string;
+  imageType: string;
 
   @Column()
-  createdAt: string;
+  createdAt: Date;
 
   @Column()
   likes: number;
+
+  @Column()
+  imagePath: string;
 }
