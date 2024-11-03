@@ -1,9 +1,9 @@
-// src/app.module.ts
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { Image } from './entities/image.entity';
-import { ImageService } from './services/image.service';
-import { ImageController } from './controllers/image.controller';
+import { Image } from './images/images.entity';
+import { ImagesModule } from './images/images.module';
+import { UsersModule } from './users/users.module';
+import { User } from './users/users.entity';
 
 @Module({
   imports: [
@@ -14,12 +14,11 @@ import { ImageController } from './controllers/image.controller';
       username: 'root',
       password: '192837465_Aa',
       database: 'vibe_pic_db',
-      entities: [Image], // Add the Image entity here
-      synchronize: true, // Turn off in production
+      entities: [Image, User],
+      synchronize: true,
     }),
-    TypeOrmModule.forFeature([Image]), // Add here as well
+    ImagesModule,
+    UsersModule
   ],
-  controllers: [ImageController],
-  providers: [ImageService],
 })
 export class AppModule {}
