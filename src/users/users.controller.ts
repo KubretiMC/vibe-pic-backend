@@ -7,7 +7,8 @@ export class UsersController {
   constructor(private readonly usersService: UsersService) {}
 
   @Get()
-  async getAllImages(): Promise<User[]> {
-    return this.usersService.findAll();
+  async getAllUsers(): Promise<User[]> {
+    const users = await this.usersService.findAll();
+    return users;
   }
 }
