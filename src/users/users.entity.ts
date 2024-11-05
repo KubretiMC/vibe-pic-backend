@@ -1,4 +1,5 @@
-import { Entity, PrimaryGeneratedColumn, Column } from 'typeorm';
+import { Like } from 'src/likes/likes.entity';
+import { Entity, PrimaryGeneratedColumn, Column, OneToMany } from 'typeorm';
 
 @Entity('users')
 export class User {
@@ -16,4 +17,7 @@ export class User {
 
   @Column()
   avatarImage: string;
+
+  @OneToMany(() => Like, (like) => like.user)
+  likes: Like[];
 }
