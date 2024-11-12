@@ -6,6 +6,7 @@ import { UsersModule } from './users/users.module';
 import { User } from './users/users.entity';
 import { LikesModule } from './likes/likes.module';
 import { Like } from './likes/likes.entity';
+import { Group } from './groups/groups.entity';
 
 @Module({
   imports: [
@@ -16,7 +17,7 @@ import { Like } from './likes/likes.entity';
       username: 'root',
       password: '192837465_Aa',
       database: 'vibe_pic_db',
-      entities: [Image, User, Like],
+      entities: [Image, User, Like, Group],
       synchronize: true,
     }),
     ImagesModule,
