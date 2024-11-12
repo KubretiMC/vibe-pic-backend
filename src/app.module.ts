@@ -7,6 +7,8 @@ import { User } from './users/users.entity';
 import { LikesModule } from './likes/likes.module';
 import { Like } from './likes/likes.entity';
 import { Group } from './groups/groups.entity';
+import { UserGroup } from './user-groups/user-groups.entity';
+import { UserGroupsModule } from './user-groups/user-group.module';
 
 @Module({
   imports: [
@@ -17,12 +19,13 @@ import { Group } from './groups/groups.entity';
       username: 'root',
       password: '192837465_Aa',
       database: 'vibe_pic_db',
-      entities: [Image, User, Like, Group],
+      entities: [Image, User, Like, Group, UserGroup],
       synchronize: true,
     }),
     ImagesModule,
     UsersModule,
-    LikesModule
+    LikesModule,
+    UserGroupsModule
   ],
 })
 export class AppModule {}

@@ -1,4 +1,5 @@
 import { Like } from 'src/likes/likes.entity';
+import { UserGroup } from 'src/user-groups/user-groups.entity';
 import { Entity, PrimaryGeneratedColumn, Column, OneToMany } from 'typeorm';
 
 @Entity('users')
@@ -20,4 +21,7 @@ export class User {
 
   @OneToMany(() => Like, (like) => like.user)
   likes: Like[];
+
+  @OneToMany(() => UserGroup, (userGroup) => userGroup.user)
+  userGroups: UserGroup[];
 }
