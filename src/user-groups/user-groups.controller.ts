@@ -1,4 +1,4 @@
-import { Controller, Get, Param, ParseIntPipe, Request, ForbiddenException, Post } from '@nestjs/common';
+import { Controller, Get, Param, ParseIntPipe, Request, ForbiddenException, Post, Query, BadRequestException, Body } from '@nestjs/common';
 import { UserGroupsService } from './user-groups.service';
 
 @Controller('groups')
@@ -8,9 +8,12 @@ export class UserGroupsController {
   @Get(':groupId/is-member')
   async isUserInGroup(
     @Param('groupId', ParseIntPipe) groupId: number,
-    @Request() req,
+    @Query('userId') userId: number,
   ): Promise<{ isMember: boolean }> {
-    const userId = req.user.id;
+    if (!userId) {
+      throw new BadRequestException('User ID is required');
+    }
+  
     const isMember = await this.groupService.isUserInGroup(userId, groupId);
     return { isMember };
   }
@@ -33,9 +36,8 @@ export class UserGroupsController {
   @Post(':groupId/join')
   async addUserToGroup(
     @Param('groupId', ParseIntPipe) groupId: number,
-    @Request() req,
+    @Body('userId') userId: number,
   ) {
-    const userId = req.user.id;
     return await this.groupService.addUserToGroup(userId, groupId);
   }
 }

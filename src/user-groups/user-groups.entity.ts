@@ -2,7 +2,7 @@ import { Group } from 'src/groups/groups.entity';
 import { User } from 'src/users/users.entity';
 import { Entity, PrimaryGeneratedColumn, ManyToOne, JoinColumn, Column } from 'typeorm';
 
-@Entity('user_groups')
+@Entity('user_groups_associations')
 export class UserGroup {
   @PrimaryGeneratedColumn()
   id: number;

@@ -9,6 +9,7 @@ import { Like } from './likes/likes.entity';
 import { Group } from './groups/groups.entity';
 import { UserGroup } from './user-groups/user-groups.entity';
 import { UserGroupsModule } from './user-groups/user-group.module';
+import { GroupsModule } from './groups/groups.module';
 
 @Module({
   imports: [
@@ -22,6 +23,7 @@ import { UserGroupsModule } from './user-groups/user-group.module';
       entities: [Image, User, Like, Group, UserGroup],
       synchronize: true,
     }),
+    GroupsModule,
     ImagesModule,
     UsersModule,
     LikesModule,
