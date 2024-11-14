@@ -18,7 +18,27 @@ export class ImagesService {
 
     const updatedImagesData = await Promise.all(
       images.map(async (image) => {
-        const uploader = await this.usersService.findById(parseInt(image.uploaderId));
+        const uploader = await this.usersService.findById(image.uploaderId);
+        const { uploaderId, group, likedBy, ...imageWithoutUploaderId } = image;
+        return {
+          ...imageWithoutUploaderId,
+          imageType: image.group?.name,
+          uploaderName: uploader ? uploader.username : 'Anonymous',
+        };
+      }),
+    );
+    return updatedImagesData;
+  }
+
+  async findByGroup(groupId: string): Promise<ImageDTO[]> {
+    const images = await this.imageRepository.find({
+      where: { group: { id: groupId } },
+      relations: ['group'],
+    });
+
+    const updatedImagesData = await Promise.all(
+      images.map(async (image) => {
+        const uploader = await this.usersService.findById(image.uploaderId);
         const { uploaderId, group, likedBy, ...imageWithoutUploaderId } = image;
         return {
           ...imageWithoutUploaderId,

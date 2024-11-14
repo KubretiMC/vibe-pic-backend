@@ -1,4 +1,4 @@
-import { Controller, Get } from '@nestjs/common';
+import { Controller, Get, Query } from '@nestjs/common';
 import { ImagesService } from './images.service';
 import { ImageDTO } from './images.dto';
 
@@ -11,5 +11,10 @@ export class ImagesController {
   @Get()
   async getAllImages(): Promise<ImageDTO[]> {
     return this.imagesService.findAll();
+  }
+
+  @Get('group')
+  async getImagesByGroup(@Query('groupId') groupId: string): Promise<ImageDTO[]> {
+    return this.imagesService.findByGroup(groupId);
   }
 }
