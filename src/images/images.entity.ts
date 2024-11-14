@@ -4,8 +4,8 @@ import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, OneToMany, Ma
 
 @Entity('images')
 export class Image {
-  @PrimaryGeneratedColumn()
-  id: number;
+  @PrimaryGeneratedColumn('uuid')
+  id: string;
 
   @Column()
   uploaderId: string;

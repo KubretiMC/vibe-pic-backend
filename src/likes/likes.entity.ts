@@ -4,8 +4,8 @@ import { Entity, PrimaryGeneratedColumn, ManyToOne, JoinColumn, DeleteDateColumn
 
 @Entity('likes')
 export class Like {
-  @PrimaryGeneratedColumn()
-  id: number;
+  @PrimaryGeneratedColumn('uuid')
+  id: string;
 
   @ManyToOne(() => User, user => user.likes, { onDelete: 'CASCADE' })
   @JoinColumn({ name: 'userId' })

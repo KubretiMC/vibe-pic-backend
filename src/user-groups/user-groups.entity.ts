@@ -4,8 +4,8 @@ import { Entity, PrimaryGeneratedColumn, ManyToOne, JoinColumn, Column } from 't
 
 @Entity('user_groups_associations')
 export class UserGroup {
-  @PrimaryGeneratedColumn()
-  id: number;
+  @PrimaryGeneratedColumn('uuid')
+  id: string;
 
   @ManyToOne(() => User, (user) => user.userGroups, { onDelete: 'CASCADE' })
   @JoinColumn({ name: 'userId' })

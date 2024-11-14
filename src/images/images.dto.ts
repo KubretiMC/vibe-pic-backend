@@ -1,5 +1,5 @@
 export class ImageDTO {
-  id: number;
+  id: string;
   description: string;
   uploaderName: string;
   likes: number;

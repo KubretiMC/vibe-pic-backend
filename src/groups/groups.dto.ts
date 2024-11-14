@@ -1,5 +1,5 @@
 export class GroupDTO {
-    id: number;
+    id: string;
     name: string;
   }
   

@@ -4,8 +4,8 @@ import { UserGroup } from 'src/user-groups/user-groups.entity';
 
 @Entity('groups')
 export class Group {
-  @PrimaryGeneratedColumn()
-  id: number;
+  @PrimaryGeneratedColumn('uuid')
+  id: string;
 
   @Column()
   name: string;

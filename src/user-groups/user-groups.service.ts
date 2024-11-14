@@ -13,7 +13,7 @@ export class UserGroupsService {
     private imageRepository: Repository<Image>,
   ) {}
 
-  async isUserInGroup(userId: number, groupId: number): Promise<boolean> {
+  async isUserInGroup(userId: string, groupId: string): Promise<boolean> {
     const userGroup = await this.userGroupRepository.findOne({
       where: { user: { id: userId }, group: { id: groupId } },
       relations: ['user', 'group'],
@@ -21,14 +21,14 @@ export class UserGroupsService {
     return !!userGroup;
   }
 
-  async findImagesByGroup(groupId: number): Promise<Image[]> {
+  async findImagesByGroup(groupId: string): Promise<Image[]> {
     return await this.imageRepository.find({
       where: { group: { id: groupId } },
       relations: ['group'],
     });
   }
 
-  async addUserToGroup(userId: number, groupId: number): Promise<UserGroup> {
+  async addUserToGroup(userId: string, groupId: string): Promise<UserGroup> {
     const existingUserGroup = await this.userGroupRepository.findOne({
       where: { user: { id: userId }, group: { id: groupId } },
       relations: ['user', 'group'],
