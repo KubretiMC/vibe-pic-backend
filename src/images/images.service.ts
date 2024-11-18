@@ -30,9 +30,9 @@ export class ImagesService {
     return updatedImagesData;
   }
 
-  async findByGroup(groupId: string): Promise<ImageDTO[]> {
+  async findByGroup(groupName: string): Promise<ImageDTO[]> {
     const images = await this.imageRepository.find({
-      where: { group: { id: groupId } },
+      where: { group: { name: groupName } },
       relations: ['group'],
     });
 

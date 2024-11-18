@@ -14,7 +14,7 @@ export class ImagesController {
   }
 
   @Get('group')
-  async getImagesByGroup(@Query('groupId') groupId: string): Promise<ImageDTO[]> {
-    return this.imagesService.findByGroup(groupId);
+  async getImagesByGroup(@Query('groupName') groupName: string): Promise<ImageDTO[]> {
+    return this.imagesService.findByGroup(groupName);
   }
 }

@@ -5,39 +5,39 @@ import { UserGroupsService } from './user-groups.service';
 export class UserGroupsController {
   constructor(private readonly groupService: UserGroupsService) {}
 
-  @Get(':groupId/is-member')
+  @Get(':groupName/is-member')
   async isUserInGroup(
-    @Param('groupId') groupId: string,
+    @Param('groupName') groupName: string,
     @Query('userId') userId: string,
   ): Promise<{ isMember: boolean }> {
     if (!userId) {
       throw new BadRequestException('User ID is required');
     }
   
-    const isMember = await this.groupService.isUserInGroup(userId, groupId);
+    const isMember = await this.groupService.isUserInGroup(userId, groupName);
     return { isMember };
   }
 
-  @Get(':groupId/images')
+  @Get(':groupName/images')
   async getGroupImages(
-    @Param('groupId') groupId: string,
+    @Param('groupName') groupName: string,
     @Request() req,
   ) {
     const userId = req.user.id;
-    const isMember = await this.groupService.isUserInGroup(userId, groupId);
+    const isMember = await this.groupService.isUserInGroup(userId, groupName);
 
     if (!isMember) {
       throw new ForbiddenException('You must join the group to view its images.');
     }
 
-    return await this.groupService.findImagesByGroup(groupId);
+    return await this.groupService.findImagesByGroup(groupName);
   }
 
-  @Post(':groupId/join')
+  @Post(':groupName/join')
   async addUserToGroup(
-    @Param('groupId') groupId: string,
+    @Param('groupName') groupName: string,
     @Body('userId') userId: string,
   ) {
-    return await this.groupService.addUserToGroup(userId, groupId);
+    return await this.groupService.addUserToGroup(userId, groupName);
   }
 }

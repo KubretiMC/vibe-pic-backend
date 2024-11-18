@@ -10,6 +10,9 @@ export class Group {
   @Column()
   name: string;
 
+  @Column()
+  description: string;
+
   @OneToMany(() => Image, (image) => image.group)
   images: Image[];
 
