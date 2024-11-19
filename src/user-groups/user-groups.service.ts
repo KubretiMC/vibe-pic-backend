@@ -62,4 +62,25 @@ export class UserGroupsService {
       }
     }
   }
+
+  async getGroupDetails(groupName: string): Promise<{ id: string; name: string; description: string; memberCount: number }> {
+    const group = await this.groupRepository.findOne({
+      where: { name: groupName },
+    });
+
+    if (!group) {
+      throw new Error(`Group with name '${groupName}' not found`);
+    }
+
+    const memberCount = await this.userGroupRepository.count({
+      where: { group: { id: group.id } },
+    });
+
+    return {
+      id: group.id,
+      name: group.name,
+      description: group.description,
+      memberCount,
+    };
+  }
 }
