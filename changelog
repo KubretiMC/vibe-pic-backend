@@ -1,4 +1,9 @@
-## [1.3.0] - 2024-11-05
+## [1.4.0] - 2024-11-19
+- made group end points
+- made group and user_groups_associations tables
+- adjusted id storing in databas
+
+## [1.3.0] - 2024-11-06
 - likes endpoint added
 - removing likes endpoint added
 - getting images liked status added
