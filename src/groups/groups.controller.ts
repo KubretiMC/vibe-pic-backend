@@ -1,14 +1,14 @@
 import { Controller, Get, Param } from '@nestjs/common';
 import { GroupsService } from './groups.service';
-import { GroupIdNameDTO, GroupNameDescriptionDTO } from './groups.dto';
+import { GroupNameDescriptionDTO } from './groups.dto';
 
 @Controller('groups')
 export class GroupsController {
   constructor(private readonly groupService: GroupsService) {}
 
   @Get('names')
-  async getGroupNameAndId(): Promise<GroupIdNameDTO[]> {
-    return this.groupService.getGroupNameAndId();
+  async getGroupNameAndId(): Promise<string[]> {
+    return this.groupService.getGroupsNames();
   }
 
   @Get(':groupName/description')

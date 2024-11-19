@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Group } from './groups.entity';
-import { GroupNameDescriptionDTO, GroupIdNameDTO } from './groups.dto';
+import { GroupNameDescriptionDTO } from './groups.dto';
 
 @Injectable()
 export class GroupsService {
@@ -11,11 +11,12 @@ export class GroupsService {
     private groupRepository: Repository<Group>,
   ) {}
 
-  async getGroupNameAndId(): Promise<GroupIdNameDTO[]> {
-    return this.groupRepository.find({
-      select: ['id', 'name'],
+  async getGroupsNames(): Promise<string[]> {
+    const groups = await this.groupRepository.find({
+      select: ['name'],
     });
-  }
+    return groups.map(group => group.name);
+  }  
 
   async getGroupByName(name: string): Promise<GroupNameDescriptionDTO> {
     return this.groupRepository.findOne({
