@@ -21,7 +21,7 @@ export class GroupsService {
   async getGroupByName(name: string): Promise<GroupNameDescriptionDTO> {
     return this.groupRepository.findOne({
       where: { name },
-      select: ['name', 'description'],
+      select: ['id', 'name', 'description'],
     });
   }
 }
