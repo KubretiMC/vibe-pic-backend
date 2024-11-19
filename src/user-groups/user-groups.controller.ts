@@ -1,7 +1,7 @@
 import { Controller, Get, Param, Request, ForbiddenException, Post, Query, BadRequestException, Body } from '@nestjs/common';
 import { UserGroupsService } from './user-groups.service';
 
-@Controller('groups')
+@Controller('user-groups')
 export class UserGroupsController {
   constructor(private readonly groupService: UserGroupsService) {}
 

@@ -13,20 +13,25 @@ export class ImagesService {
     private usersService: UsersService,
   ) {}
 
-  private async transformImage(image: Image): Promise<ImageDTO> {
-    const uploader = await this.usersService.findById(image.uploaderId);
-    const { uploaderId, group, likedBy, ...imageWithoutUploaderId } = image;
-
-    return {
-      ...imageWithoutUploaderId,
-      imageType: group?.name || 'Unknown',
-      uploaderName: uploader?.username || 'Anonymous',
-    };
+  private async transformImage(images: Image[]): Promise<any> {
+    const updatedImagesData = await Promise.all(
+      images.map(async (image) => {
+        const uploader = await this.usersService.findById(image.uploaderId);
+        const { uploaderId, group, likedBy, ...imageWithoutUploaderId } = image;
+        return {
+          ...imageWithoutUploaderId,
+          imageType: image.group?.name,
+          uploaderName: uploader ? uploader.username : 'Anonymous',
+        };
+      }),
+    );
+    return updatedImagesData;
   }
 
   async findAll(): Promise<ImageDTO[]> {
     const images = await this.imageRepository.find({ relations: ['group'] });
-    return Promise.all(images.map((image) => this.transformImage(image)));
+    const updatedImagesData = await this.transformImage(images);
+    return updatedImagesData;
   }
 
   async findByGroup(groupName: string): Promise<ImageDTO[]> {
@@ -34,6 +39,7 @@ export class ImagesService {
       where: { group: { name: groupName } },
       relations: ['group'],
     });
-    return Promise.all(images.map((image) => this.transformImage(image)));
+    const updatedImagesData = await this.transformImage(images);
+    return updatedImagesData;
   }
 }
