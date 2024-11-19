@@ -1,3 +1,6 @@
+## [1.4.1] - 2024-11-19
+- changed user-groups controller name and simplified service logic
+
 ## [1.4.0] - 2024-11-19
 - made group end points
 - made group and user_groups_associations tables
