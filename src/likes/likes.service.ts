@@ -14,7 +14,7 @@ export class LikesService {
     private readonly imagesRepository: Repository<Image>,
   ) {}
 
-  async likeImage(userId: number, imageId: number): Promise<{ message: string }> {
+  async likeImage(userId: string, imageId: string): Promise<{ message: string }> {
     try {
       const existingLike = await this.likesRepository.findOne({
         where: { user: { id: userId }, image: { id: imageId } },
@@ -44,7 +44,7 @@ export class LikesService {
   }
   
 
-  async unlikeImage(userId: number, imageId: number): Promise<{message: string}>  {
+  async unlikeImage(userId: string, imageId: string): Promise<{message: string}>  {
     try {
       const likedImage = await this.likesRepository.findOne({
         where: { user: { id: userId }, image: { id: imageId } },
@@ -65,7 +65,7 @@ export class LikesService {
     }
   }
 
-  async checkBatchLikesStatus(userId: number, imageIds: number[]): Promise<{ [imageId: number]: boolean }> {
+  async checkBatchLikesStatus(userId: string, imageIds: string[]): Promise<{ [imageId: string]: boolean }> {
     const likes = await this.likesRepository.find({
       where: {
         user: { id: userId },
@@ -75,7 +75,7 @@ export class LikesService {
     });
 
     const likedImageIds = likes.map((like) => like.image.id);
-    const result: { [imageId: number]: boolean } = {};
+    const result: { [imageId: string]: boolean } = {};
 
     imageIds.forEach((imageId) => {
       result[imageId] = likedImageIds.includes(imageId);
