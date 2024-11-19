@@ -40,4 +40,9 @@ export class UserGroupsController {
   ) {
     return await this.groupService.addUserToGroup(userId, groupName);
   }
+
+  @Get(':groupName/details')
+  async getGroupDetails(@Param('groupName') groupName: string) {
+    return this.groupService.getGroupDetails(groupName);
+  }
 }
