@@ -1,3 +1,7 @@
+## [1.5.0] - 2024-11-19
+- adjusted to take member count with the group information
+
+
 ## [1.4.1] - 2024-11-19
 - changed user-groups controller name and simplified service logic
 
