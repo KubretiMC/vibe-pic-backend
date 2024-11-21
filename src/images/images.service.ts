@@ -4,6 +4,7 @@ import { Repository } from 'typeorm';
 import { Image } from './images.entity';
 import { UsersService } from 'src/users/users.service';
 import { ImageDTO } from './images.dto';
+import { startOfWeek, subWeeks, endOfWeek } from 'date-fns';
 
 @Injectable()
 export class ImagesService {
@@ -13,7 +14,7 @@ export class ImagesService {
     private usersService: UsersService,
   ) {}
 
-  private async transformImage(images: Image[]): Promise<any> {
+  private async transformImage(images: Image[]): Promise<ImageDTO[]> {
     const updatedImagesData = await Promise.all(
       images.map(async (image) => {
         const uploader = await this.usersService.findById(image.uploaderId);
@@ -28,18 +29,57 @@ export class ImagesService {
     return updatedImagesData;
   }
 
-  async findAll(): Promise<ImageDTO[]> {
-    const images = await this.imageRepository.find({ relations: ['group'] });
-    const updatedImagesData = await this.transformImage(images);
-    return updatedImagesData;
+  private applyWeekFilter(date: Date, week: 'this' | 'last' | 'beforeLast'): { startDate: Date, endDate: Date } {
+    let startDate: Date;
+    let endDate: Date;
+
+    if (week === 'this') {
+      startDate = startOfWeek(date, { weekStartsOn: 1 });
+      endDate = endOfWeek(date, { weekStartsOn: 1 });
+    } else if (week === 'last') {
+      startDate = startOfWeek(subWeeks(date, 1), { weekStartsOn: 1 });
+      endDate = endOfWeek(subWeeks(date, 1), { weekStartsOn: 1 });
+    } else if (week === 'beforeLast') {
+      startDate = startOfWeek(subWeeks(date, 2), { weekStartsOn: 1 });
+      endDate = endOfWeek(subWeeks(date, 2), { weekStartsOn: 1 });
+    } else {
+      throw new Error('Invalid week parameter.');
+    }
+
+    return { startDate, endDate };
   }
 
-  async findByGroup(groupName: string): Promise<ImageDTO[]> {
-    const images = await this.imageRepository.find({
-      where: { group: { name: groupName } },
-      relations: ['group'],
-    });
-    const updatedImagesData = await this.transformImage(images);
-    return updatedImagesData;
+  async findAll(week?: 'this' | 'last' | 'beforeLast', groupName?: string): Promise<ImageDTO[]> {
+    const today = new Date();
+    const localToday = new Date(
+      today.toLocaleString('en-US', { timeZone: 'Europe/Sofia' })
+    );
+
+    let startDate = new Date(localToday);
+    let endDate = new Date(localToday);
+
+    if (week) {
+      const weekFilter = this.applyWeekFilter(localToday, week);
+      startDate = weekFilter.startDate;
+      endDate = weekFilter.endDate;
+    }
+
+    const query = this.imageRepository.createQueryBuilder('image')
+      .leftJoinAndSelect('image.group', 'group');
+
+    if (week) {
+      query.andWhere('image.createdAt BETWEEN :startDate AND :endDate', { startDate, endDate });
+    }
+
+    if (groupName) {
+      query.andWhere('group.name = :groupName', { groupName });
+    }
+
+    const images = await query.getMany();
+    return this.transformImage(images);
+  }
+
+  async findByGroup(groupName: string, week?: 'this' | 'last' | 'beforeLast'): Promise<ImageDTO[]> {
+    return this.findAll(week, groupName);
   }
 }

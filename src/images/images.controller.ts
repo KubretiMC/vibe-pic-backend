@@ -4,17 +4,21 @@ import { ImageDTO } from './images.dto';
 
 @Controller('images')
 export class ImagesController {
-  constructor(
-    private readonly imagesService: ImagesService,
-  ) {}
+  constructor(private readonly imagesService: ImagesService) {}
 
   @Get()
-  async getAllImages(): Promise<ImageDTO[]> {
-    return this.imagesService.findAll();
+  async getAllImages(
+    @Query('week') week?: 'this' | 'last' | 'beforeLast',
+    @Query('groupName') groupName?: string
+  ): Promise<ImageDTO[]> {
+    return this.imagesService.findAll(week, groupName);
   }
 
   @Get('group')
-  async getImagesByGroup(@Query('groupName') groupName: string): Promise<ImageDTO[]> {
-    return this.imagesService.findByGroup(groupName);
+  async getImagesByGroup(
+    @Query('groupName') groupName: string,
+    @Query('week') week?: 'this' | 'last' | 'beforeLast'
+  ): Promise<ImageDTO[]> {
+    return this.imagesService.findByGroup(groupName, week);
   }
 }
