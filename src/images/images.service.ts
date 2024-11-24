@@ -49,7 +49,7 @@ export class ImagesService {
     return { startDate, endDate };
   }
 
-  async findAll(week?: 'this' | 'last' | 'beforeLast', groupName?: string): Promise<ImageDTO[]> {
+  async findAll(week?: 'this' | 'last' | 'beforeLast', groupName?: string, mostLiked?: string): Promise<ImageDTO[]> {
     const today = new Date();
     const localToday = new Date(
       today.toLocaleString('en-US', { timeZone: 'Europe/Sofia' })
@@ -75,11 +75,15 @@ export class ImagesService {
       query.andWhere('group.name = :groupName', { groupName });
     }
 
+    if (mostLiked === 'images') {
+      query.orderBy('image.likes', 'DESC');
+    }
+
     const images = await query.getMany();
     return this.transformImage(images);
   }
 
-  async findByGroup(groupName: string, week?: 'this' | 'last' | 'beforeLast'): Promise<ImageDTO[]> {
-    return this.findAll(week, groupName);
+  async findByGroup(groupName: string, week?: 'this' | 'last' | 'beforeLast', mostLiked?: string): Promise<ImageDTO[]> {
+    return this.findAll(week, groupName, mostLiked);
   }
 }
