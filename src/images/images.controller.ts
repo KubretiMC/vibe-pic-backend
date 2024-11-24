@@ -9,16 +9,18 @@ export class ImagesController {
   @Get()
   async getAllImages(
     @Query('week') week?: 'this' | 'last' | 'beforeLast',
-    @Query('groupName') groupName?: string
+    @Query('groupName') groupName?: string,
+    @Query('mostLiked') mostLiked?: string
   ): Promise<ImageDTO[]> {
-    return this.imagesService.findAll(week, groupName);
+    return this.imagesService.findAll(week, groupName, mostLiked);
   }
 
   @Get('group')
   async getImagesByGroup(
     @Query('groupName') groupName: string,
-    @Query('week') week?: 'this' | 'last' | 'beforeLast'
+    @Query('week') week?: 'this' | 'last' | 'beforeLast',
+    @Query('mostLiked') mostLiked?: string
   ): Promise<ImageDTO[]> {
-    return this.imagesService.findByGroup(groupName, week);
+    return this.imagesService.findByGroup(groupName, week, mostLiked);
   }
 }
