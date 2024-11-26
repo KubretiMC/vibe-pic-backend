@@ -3,14 +3,17 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Image } from './images.entity';
 import { UsersService } from 'src/users/users.service';
-import { ImageDTO } from './images.dto';
+import { ImageDTO, ImageWithoutTypeDTO, ImageWithUploaderIdDTO } from './images.dto';
 import { startOfWeek, subWeeks, endOfWeek } from 'date-fns';
+import { Like } from 'src/likes/likes.entity';
 
 @Injectable()
 export class ImagesService {
   constructor(
     @InjectRepository(Image)
     private imageRepository: Repository<Image>,
+    @InjectRepository(Like)
+    private likeRepository: Repository<Like>,
     private usersService: UsersService,
   ) {}
 
@@ -85,5 +88,22 @@ export class ImagesService {
 
   async findByGroup(groupName: string, week?: 'this' | 'last' | 'beforeLast', mostLiked?: string): Promise<ImageDTO[]> {
     return this.findAll(week, groupName, mostLiked);
+  }
+
+  async findByUploaderId(uploaderId: string): Promise<ImageWithUploaderIdDTO[]> {
+    const images = await this.imageRepository.find({
+      where: { uploaderId },
+    });
+    return images;
+  }
+
+  async getLikedImagesByUser(userId: string): Promise<ImageWithoutTypeDTO[]> {
+    const likedImages = await this.likeRepository.find({
+      where: { user: { id: userId } },
+      relations: ['image'],
+    });
+    
+    const images = likedImages.map((like) => like.image);
+    return this.transformImage(images);
   }
 }

@@ -7,3 +7,7 @@ export class ImageDTO {
   createdAt: Date;
   imageType: string;
 }
+
+export type ImageWithoutTypeDTO = Omit<ImageDTO, 'imageType'>;
+
+export type ImageWithUploaderIdDTO = Omit<ImageWithoutTypeDTO, 'uploaderName'> & { uploaderId: string };
