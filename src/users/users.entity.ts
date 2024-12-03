@@ -17,7 +17,7 @@ export class User {
   email: string;
 
   @Column()
-  avatarImage: string;
+  avatarUrl: string;
 
   @OneToMany(() => Like, (like) => like.user)
   likes: Like[];
