@@ -18,13 +18,14 @@ export class UsersService {
     return await this.usersRepository.findOne({ where: { id } });
   }
 
-  async updateAvatar(userId: string, avatarUrl: string): Promise<User> {
+  async updateAvatar(userId: string, avatarUrl: string, avatarPublicId: string): Promise<User> {
     const user = await this.usersRepository.findOneBy({ id: userId });
     if (!user) {
       throw new Error('User not found.');
     }
 
     user.avatarUrl = avatarUrl;
+    user.avatarPublicId = avatarPublicId;
     return this.usersRepository.save(user);
   }
 }

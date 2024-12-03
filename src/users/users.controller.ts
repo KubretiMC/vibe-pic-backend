@@ -46,6 +46,15 @@ export class UsersController {
     }
   
     try {
+      const user = await this.usersService.findById(userId);
+      if (!user) {
+        throw new Error('User not found.');
+      }
+  
+      if (user.avatarPublicId) {
+        await cloudinary.uploader.destroy(user.avatarPublicId);
+      }
+  
       const uploadStream = (options) =>
         new Promise((resolve, reject) => {
           const stream = cloudinary.uploader.upload_stream(options, (error, result) => {
@@ -56,10 +65,11 @@ export class UsersController {
           bufferToStream(file.buffer).pipe(stream);
         });
   
-      const result: any = await uploadStream({});
-
-      if(result) {
-        await this.usersService.updateAvatar(userId, result.secure_url);
+      const result: any = await uploadStream({ folder: 'avatars' });
+  
+      if (result) {
+        await this.usersService.updateAvatar(userId, result.secure_url, result.public_id);
+  
         return {
           avatarUrl: result.secure_url,
         };

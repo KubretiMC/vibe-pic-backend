@@ -19,6 +19,9 @@ export class User {
   @Column()
   avatarUrl: string;
 
+  @Column()
+  avatarPublicId: string;
+
   @OneToMany(() => Like, (like) => like.user)
   likes: Like[];
 
