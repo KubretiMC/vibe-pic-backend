@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Post, Query, UploadedFile, UseInterceptors } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Post, Query, UploadedFile, UseInterceptors } from '@nestjs/common';
 import { ImagesService } from './images.service';
 import { ImageDTO, ImageWithoutTypeDTO, ImageWithUploaderIdDTO } from './images.dto';
 import { FileInterceptor } from '@nestjs/platform-express';
@@ -60,10 +60,10 @@ export class ImagesController {
       if (!user) {
         throw new Error('User not found.');
       }
-      const result: any = await uploadFileToCloudinary(file.buffer, { folder: 'avatars' });;
+      const result: any = await uploadFileToCloudinary(file.buffer, { folder: 'user_images' });;
 
       if (result) {
-        const imageRecord = await this.imagesService.saveImageMetadata(
+        const image = await this.imagesService.uploadImage(
           file.originalname,
           result.secureUrl,
           result.publicId,
@@ -71,8 +71,7 @@ export class ImagesController {
         );
 
         return {
-          imageUrl: result.secure_url,
-          imageId: imageRecord.id,
+          image
         };
       } else {
         console.error('Cloudinary Upload Error');
@@ -81,6 +80,16 @@ export class ImagesController {
     } catch (error) {
       console.error('Error during upload:', error);
       throw error;
+    }
+  }
+
+  @Delete(':id')
+  async deleteImage(@Param('id') id: string): Promise<{ message: string }> {
+    try {
+      await this.imagesService.deleteImageById(id);
+      return { message: 'Image deleted successfully.' };
+    } catch (error) {
+      throw new Error(`Failed to delete image: ${error.message}`);
     }
   }
 }

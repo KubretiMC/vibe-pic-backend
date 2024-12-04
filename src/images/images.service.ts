@@ -6,6 +6,7 @@ import { UsersService } from 'src/users/users.service';
 import { ImageDTO, ImageWithoutTypeDTO, ImageWithUploaderIdDTO } from './images.dto';
 import { startOfWeek, subWeeks, endOfWeek } from 'date-fns';
 import { Like } from 'src/likes/likes.entity';
+import cloudinary from 'cloudinary.config';
 
 @Injectable()
 export class ImagesService {
@@ -107,7 +108,7 @@ export class ImagesService {
     return this.transformImage(images);
   }
 
-  async saveImageMetadata(
+  async uploadImage(
     description: string,
     imageUrl: string,
     publicId: string,
@@ -123,5 +124,22 @@ export class ImagesService {
     });
   
     return this.imageRepository.save(newImage);
+  }
+
+  async deleteImageById(id: string): Promise<void> {
+    const image = await this.imageRepository.findOne({ where: { id } });
+    if (!image) {
+      throw new Error('Image not found.');
+    }
+
+    try {
+      if (image.publicId) {
+        await cloudinary.uploader.destroy(image.publicId);
+      }
+    } catch (cloudError) {
+      console.error('Cloud image deletion failed:', cloudError);
+    }
+
+    await this.imageRepository.softDelete({ id });
   }
 }
