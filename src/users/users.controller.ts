@@ -5,6 +5,7 @@ import { FileInterceptor } from '@nestjs/platform-express';
 import cloudinary from 'cloudinary.config';
 import { Readable } from 'stream';
 import { UserMainInfoDTO } from './users.dto';
+import { uploadFileToCloudinary } from 'src/utils/utils';
 
 function bufferToStream(buffer: Buffer): Readable {
   const stream = new Readable();
@@ -53,25 +54,14 @@ export class UsersController {
   
       if (user.avatarPublicId) {
         await cloudinary.uploader.destroy(user.avatarPublicId);
-      }
-  
-      const uploadStream = (options) =>
-        new Promise((resolve, reject) => {
-          const stream = cloudinary.uploader.upload_stream(options, (error, result) => {
-            if (error) return reject(error);
-            resolve(result);
-          });
-  
-          bufferToStream(file.buffer).pipe(stream);
-        });
-  
-      const result: any = await uploadStream({ folder: 'avatars' });
-  
+      }  
+      const result: any = await uploadFileToCloudinary(file.buffer, { folder: 'avatars' });;
+
       if (result) {
-        await this.usersService.updateAvatar(userId, result.secure_url, result.public_id);
+        await this.usersService.updateAvatar(userId, result.secureUrl, result.publicId);
   
         return {
-          avatarUrl: result.secure_url,
+          avatarUrl: result.secureUrl,
         };
       } else {
         console.error('Cloudinary Upload Error');

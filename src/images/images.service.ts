@@ -106,4 +106,22 @@ export class ImagesService {
     const images = likedImages.map((like) => like.image);
     return this.transformImage(images);
   }
+
+  async saveImageMetadata(
+    description: string,
+    imageUrl: string,
+    publicId: string,
+    uploaderId: string,
+  ) {
+    const newImage = this.imageRepository.create({
+      description,
+      imagePath: imageUrl,
+      publicId,
+      uploaderId,
+      createdAt: new Date(),
+      likes: 0,
+    });
+  
+    return this.imageRepository.save(newImage);
+  }
 }

@@ -22,6 +22,9 @@ export class Image {
   @CreateDateColumn({ type: 'timestamp' })
   createdAt: Date;
 
+  @Column({ nullable: true })
+  publicId: string;
+
   @OneToMany(() => Like, (like) => like.image)
   likedBy: Like[];
 
