@@ -28,10 +28,4 @@ export class GroupsService {
     });
     return groups;
   }  
-
-  async getGroupByName(name: string): Promise<GroupDTO> {
-    return this.groupRepository.findOne({
-      where: { name },
-    });
-  }
 }
