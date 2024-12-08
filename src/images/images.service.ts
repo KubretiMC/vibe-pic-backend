@@ -7,6 +7,7 @@ import { ImageDTO, ImageWithoutTypeDTO, ImageWithUploaderIdDTO } from './images.
 import { startOfWeek, subWeeks, endOfWeek } from 'date-fns';
 import { Like } from 'src/likes/likes.entity';
 import cloudinary from 'cloudinary.config';
+import { GroupDTO } from 'src/groups/groups.dto';
 
 @Injectable()
 export class ImagesService {
@@ -113,6 +114,7 @@ export class ImagesService {
     imageUrl: string,
     publicId: string,
     uploaderId: string,
+    group: GroupDTO,
   ) {
     const newImage = this.imageRepository.create({
       description,
@@ -121,6 +123,7 @@ export class ImagesService {
       uploaderId,
       createdAt: new Date(),
       likes: 0,
+      group
     });
   
     return this.imageRepository.save(newImage);
