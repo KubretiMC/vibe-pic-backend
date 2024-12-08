@@ -1,4 +1,5 @@
-export class GroupNameDescriptionDTO {
+export class GroupDTO {
   id: string;
-  description: string;
+  name: string;
+  description?: string;
 }

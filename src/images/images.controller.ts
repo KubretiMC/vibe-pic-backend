@@ -4,11 +4,13 @@ import { ImageDTO, ImageWithoutTypeDTO, ImageWithUploaderIdDTO } from './images.
 import { FileInterceptor } from '@nestjs/platform-express';
 import { UsersService } from 'src/users/users.service';
 import { uploadFileToCloudinary } from 'src/utils/utils';
+import { GroupsService } from 'src/groups/groups.service';
 
 @Controller('images')
 export class ImagesController {
   constructor(
     private readonly imagesService: ImagesService,
+    private readonly groupsService: GroupsService, 
     private readonly usersService: UsersService
   ) {}
 
@@ -49,6 +51,8 @@ export class ImagesController {
   async uploadImage(
     @UploadedFile() file: Express.Multer.File,
     @Body('userId') userId: string,
+    @Body('description') description: string,
+    @Body('groupId') groupId: string,
   ) {
     console.log('fsafasfas', userId);
     if (!file) {
@@ -60,14 +64,20 @@ export class ImagesController {
       if (!user) {
         throw new Error('User not found.');
       }
+      const group = await this.groupsService.findById(groupId); 
+      if (!group) {
+        throw new Error('Group not found.');
+      }
+      
       const result: any = await uploadFileToCloudinary(file.buffer, { folder: 'user_images' });;
 
       if (result) {
         const image = await this.imagesService.uploadImage(
-          file.originalname,
+          description,
           result.secureUrl,
           result.publicId,
           userId,
+          group,
         );
 
         return {
