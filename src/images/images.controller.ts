@@ -1,11 +1,13 @@
-import { Body, Controller, Delete, Get, Param, Post, Query, UploadedFile, UseInterceptors } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Post, Query, UploadedFile, UseGuards, UseInterceptors, Request } from '@nestjs/common';
 import { ImagesService } from './images.service';
 import { ImageDTO, ImageWithoutTypeDTO, ImageWithUploaderIdDTO } from './images.dto';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { UsersService } from 'src/users/users.service';
 import { uploadFileToCloudinary } from 'src/utils/utils';
 import { GroupsService } from 'src/groups/groups.service';
+import { AuthGuard } from 'src/auth/auth.guard';
 
+@UseGuards(AuthGuard)
 @Controller('images')
 export class ImagesController {
   constructor(
@@ -34,15 +36,17 @@ export class ImagesController {
 
   @Get('by-uploader')
   async getImagesByUploader(
-    @Query('uploaderId') uploaderId: string
+    @Request() req,
   ): Promise<ImageWithUploaderIdDTO[]> {
+    const uploaderId = req.user.userId;
     return this.imagesService.findByUploaderId(uploaderId);
   }
   
   @Get('liked-by-user')
   async getLikedImagesByUser(
-    @Query('userId') userId: string
+    @Request() req,
   ): Promise<ImageWithoutTypeDTO[]> {
+    const userId = req.user.userId;
     return this.imagesService.getLikedImagesByUser(userId);
   }
 
@@ -50,11 +54,11 @@ export class ImagesController {
   @UseInterceptors(FileInterceptor('file'))
   async uploadImage(
     @UploadedFile() file: Express.Multer.File,
-    @Body('userId') userId: string,
+    @Request() req,
     @Body('description') description: string,
     @Body('groupId') groupId: string,
   ) {
-    console.log('fsafasfas', userId);
+    const userId = req.user.userId;
     if (!file) {
       throw new Error('No file uploaded.');
     }

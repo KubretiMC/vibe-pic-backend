@@ -7,9 +7,10 @@ import { UsersModule } from 'src/users/users.module';
 import { Like } from 'src/likes/likes.entity';
 import { Group } from 'src/groups/groups.entity';
 import { GroupsModule } from 'src/groups/groups.module';
+import { AuthModule } from 'src/auth/auth.module';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([Image, Like, Group]), UsersModule, GroupsModule],
+  imports: [TypeOrmModule.forFeature([Image, Like, Group]), UsersModule, GroupsModule, AuthModule],
   controllers: [ImagesController],
   providers: [ImagesService],
 })
