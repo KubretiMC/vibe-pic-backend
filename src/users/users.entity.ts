@@ -7,7 +7,7 @@ export class User {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
-  @Column()
+  @Column({ unique: true })
   username: string;
 
   @Column()
@@ -16,10 +16,10 @@ export class User {
   @Column()
   email: string;
 
-  @Column()
+  @Column({ nullable: true })
   avatarUrl: string;
 
-  @Column()
+  @Column({ nullable: true })
   avatarPublicId: string;
 
   @OneToMany(() => Like, (like) => like.user)

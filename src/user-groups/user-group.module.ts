@@ -6,9 +6,10 @@ import { UserGroupsController } from './user-groups.controller';
 import { UserGroupsService } from './user-groups.service';
 import { UserGroup } from './user-groups.entity';
 import { Group } from './../groups/groups.entity';
+import { AuthModule } from 'src/auth/auth.module';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([Group, UserGroup, Image, User])],
+  imports: [TypeOrmModule.forFeature([Group, UserGroup, Image, User]), AuthModule],
   controllers: [UserGroupsController],
   providers: [UserGroupsService],
   exports: [UserGroupsService],

@@ -1,20 +1,14 @@
-import { Body, Controller, Get, Param, Post, UploadedFile, UseInterceptors } from '@nestjs/common';
+import { Controller, Get, Param, Post, UploadedFile, UseGuards, UseInterceptors, Request } from '@nestjs/common';
 import { User } from './users.entity';
 import { UsersService } from './users.service';
 import { FileInterceptor } from '@nestjs/platform-express';
 import cloudinary from 'cloudinary.config';
-import { Readable } from 'stream';
 import { UserMainInfoDTO } from './users.dto';
 import { uploadFileToCloudinary } from 'src/utils/utils';
-
-function bufferToStream(buffer: Buffer): Readable {
-  const stream = new Readable();
-  stream.push(buffer);
-  stream.push(null);
-  return stream;
-}
+import { AuthGuard } from 'src/auth/auth.guard';
 
 @Controller('users')
+@UseGuards(AuthGuard)
 export class UsersController {
   constructor(private readonly usersService: UsersService) {}
 
@@ -25,8 +19,9 @@ export class UsersController {
   }
 
   @Get(':id')
-  async getUserMainInfoById(@Param('id') id: string): Promise<UserMainInfoDTO> {
-    const user = await this.usersService.findById(id);
+  async getUserMainInfoById(@Request() req, @Param('id') id: string): Promise<UserMainInfoDTO> {
+    const userId = req.user.id;
+    const user = await this.usersService.findById(userId);
     if (!user) {
       throw new Error('User not found.');
     }
@@ -40,12 +35,12 @@ export class UsersController {
   @UseInterceptors(FileInterceptor('file'))
   async uploadAvatar(
     @UploadedFile() file: Express.Multer.File,
-    @Body('userId') userId: string,
+    @Request() req,
   ) {
     if (!file) {
       throw new Error('No file uploaded.');
     }
-  
+    const userId = req.user.id;
     try {
       const user = await this.usersService.findById(userId);
       if (!user) {
