@@ -9,7 +9,7 @@ import { UsersModule } from 'src/users/users.module';
   imports: [
     JwtModule.register({
       secret: 'your-secret-key', // Use environment variables for production
-      signOptions: { expiresIn: '1h' },
+      signOptions: { expiresIn: '4h' },
     }),
     forwardRef(() => UsersModule),
   ],

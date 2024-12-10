@@ -1,3 +1,7 @@
+## [2.0.1] - 2024-12-10
+- token expiration time increased
+- check if user with email exists made
+
 ## [2.0.0] - 2024-12-08
 - made JWT autorization for all the endpoints
 - made user registration and login

@@ -7,17 +7,21 @@ export class AuthController {
 
   @Post('login')
   async login(@Body() body: { username: string; password: string }) {
-    const token = await this.authService.validateUser(body.username, body.password);
-    if (!token) {
-      throw new UnauthorizedException('Invalid credentials');
+    try { 
+      const token = await this.authService.validateUser(body.username, body.password);
+      if (!token) {
+        throw new UnauthorizedException('Invalid credentials');
+      }
+      return { token };
+    } catch (error) {
+      throw new BadRequestException(error.message);
     }
-    return { token };
   }
 
   @Post('register')
-  async register(@Body() body: { username: string; password: string }) {
+  async register(@Body() body: { username: string; password: string, email: string }) {
     try {
-      const user = await this.authService.registerUser(body.username, body.password);
+      const user = await this.authService.registerUser(body.username, body.password, body.email);
       return { message: 'Registration successful' };
     } catch (error) {
       throw new BadRequestException(error.message);

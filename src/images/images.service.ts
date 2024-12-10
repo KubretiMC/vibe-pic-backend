@@ -26,7 +26,7 @@ export class ImagesService {
         const { uploaderId, group, likedBy, ...imageWithoutUploaderId } = image;
         return {
           ...imageWithoutUploaderId,
-          imageType: image.group?.name,
+          groupName: image.group?.name,
           uploaderName: uploader ? uploader.username : 'Anonymous',
         };
       }),

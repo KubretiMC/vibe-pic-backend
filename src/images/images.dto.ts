@@ -5,9 +5,9 @@ export class ImageDTO {
   likes: number;
   imagePath: string;
   createdAt: Date;
-  imageType: string;
+  groupName: string;
 }
 
-export type ImageWithoutTypeDTO = Omit<ImageDTO, 'imageType'>;
+export type ImageWithoutTypeDTO = Omit<ImageDTO, 'groupName'>;
 
 export type ImageWithUploaderIdDTO = Omit<ImageWithoutTypeDTO, 'uploaderName'> & { uploaderId: string };
