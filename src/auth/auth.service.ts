@@ -14,7 +14,7 @@ export class AuthService {
 
   async validateUser(username: string, password: string): Promise<string | null> {
     const user = await this.userRepository.findOne({ where: { username } });
-    
+    console.log('test666', username);
     if (!user) {
       throw new Error('Invalid username or password');
     }
