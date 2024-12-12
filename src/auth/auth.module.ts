@@ -4,11 +4,13 @@ import { AuthService } from './auth.service';
 import { AuthController } from './auth.controller';
 import { AuthGuard } from './auth.guard';
 import { UsersModule } from 'src/users/users.module';
+import * as dotenv from 'dotenv';
+dotenv.config();
 
 @Module({
   imports: [
     JwtModule.register({
-      secret: 'your-secret-key', // Use environment variables for production
+      secret: process.env.JWT_SECRET,
       signOptions: { expiresIn: '4h' },
     }),
     forwardRef(() => UsersModule),
