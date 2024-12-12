@@ -31,6 +31,9 @@ dotenv.config();
         database: configService.get<string>('MYSQL_ADDON_DB'),
         entities: [Image, User, Like, Group, UserGroup],
         synchronize: true,
+        extra: {
+          connectionLimit: 5,
+        },
       }),
       inject: [ConfigService],
     }),
