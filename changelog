@@ -1,3 +1,6 @@
+## [2.1.0] - 2024-12-12
+- connected to the new database hosting
+
 ## [2.0.2] - 2024-12-12
 - jwt token made into env
 
