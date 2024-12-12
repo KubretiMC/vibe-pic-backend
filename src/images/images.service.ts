@@ -20,9 +20,11 @@ export class ImagesService {
   ) {}
 
   private async transformImage(images: Image[]): Promise<ImageDTO[]> {
+    console.log('55555555555555', images);
     const updatedImagesData = await Promise.all(
       images.map(async (image) => {
         const uploader = await this.usersService.findById(image.uploaderId);
+        console.log('66666666666666', image.uploaderId);
         const { uploaderId, group, likedBy, ...imageWithoutUploaderId } = image;
         return {
           ...imageWithoutUploaderId,
@@ -31,6 +33,7 @@ export class ImagesService {
         };
       }),
     );
+    console.log('7777777777777777', images);
     return updatedImagesData;
   }
 
@@ -56,6 +59,7 @@ export class ImagesService {
 
   async findAll(week?: 'this' | 'last' | 'beforeLast', groupName?: string, mostLiked?: string): Promise<ImageDTO[]> {
     const today = new Date();
+    console.log('222222222222222');
     const localToday = new Date(
       today.toLocaleString('en-US', { timeZone: 'Europe/Sofia' })
     );
@@ -83,8 +87,9 @@ export class ImagesService {
     if (mostLiked === 'images') {
       query.orderBy('image.likes', 'DESC');
     }
-
+    console.log('33333333333333', query);
     const images = await query.getMany();
+    console.log('4444444444444', images);
     return this.transformImage(images);
   }
 
