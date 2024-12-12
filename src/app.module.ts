@@ -11,6 +11,8 @@ import { Group } from './groups/groups.entity';
 import { UserGroup } from './user-groups/user-groups.entity';
 import { UserGroupsModule } from './user-groups/user-group.module';
 import { GroupsModule } from './groups/groups.module';
+import * as dotenv from 'dotenv';
+dotenv.config();
 
 @Module({
   imports: [
