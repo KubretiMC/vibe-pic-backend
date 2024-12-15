@@ -18,7 +18,7 @@ export class UsersController {
     return users;
   }
 
-  @Get(':id')
+  @Get('loggedUser')
   async getUserMainInfoById(@Request() req, @Param('id') id: string): Promise<UserMainInfoDTO> {
     const userId = req.user.id;
     const user = await this.usersService.findById(userId);
