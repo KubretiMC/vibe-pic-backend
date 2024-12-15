@@ -1,3 +1,8 @@
+## [2.2.0] - 2024-12-12
+- added the uplodader avatar image to the image information
+- fixed getUserMainInfo endpoint endpoint 
+- removed some logs
+
 ## [2.1.0] - 2024-12-12
 - connected to the new database hosting
 

@@ -6,6 +6,7 @@ export class ImageDTO {
   imagePath: string;
   createdAt: Date;
   groupName: string;
+  uploaderAvatar?: string;
 }
 
 export type ImageWithoutTypeDTO = Omit<ImageDTO, 'groupName'>;

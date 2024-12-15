@@ -22,7 +22,6 @@ export class ImagesController {
     @Query('groupName') groupName?: string,
     @Query('mostLiked') mostLiked?: string
   ): Promise<ImageDTO[]> {
-    console.log('111111', week);
     return this.imagesService.findAll(week, groupName, mostLiked);
   }
 
