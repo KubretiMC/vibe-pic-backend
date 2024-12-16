@@ -19,9 +19,11 @@ export class UsersController {
   }
 
   @Get('loggedUser')
-  async getUserMainInfoById(@Request() req, @Param('id') id: string): Promise<UserMainInfoDTO> {
-    const userId = req.user.id;
+  async getUserMainInfoById(@Request() req): Promise<UserMainInfoDTO> {
+    const userId = req.user.userId;
+    console.log('userIDddddd', userId);
     const user = await this.usersService.findById(userId);
+    console.log('gasgsagsa', user);
     if (!user) {
       throw new Error('User not found.');
     }
@@ -40,7 +42,7 @@ export class UsersController {
     if (!file) {
       throw new Error('No file uploaded.');
     }
-    const userId = req.user.id;
+    const userId = req.user.userId;
     try {
       const user = await this.usersService.findById(userId);
       if (!user) {

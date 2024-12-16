@@ -13,6 +13,7 @@ export class UserGroupsController {
     @Param('groupName') groupName: string,
   ): Promise<{ isMember: boolean }> {
     const userId = req.user.userId;
+    console.log('hhhhhhhhhhhhhhhh', req.user);
     if (!userId) {
       throw new BadRequestException('User ID is required');
     }
@@ -26,7 +27,7 @@ export class UserGroupsController {
     @Param('groupName') groupName: string,
     @Request() req,
   ) {
-    const userId = req.user.id;
+    const userId = req.user.userId;
     const isMember = await this.groupService.isUserInGroup(userId, groupName);
 
     if (!isMember) {
