@@ -28,4 +28,18 @@ export class UsersService {
     user.avatarPublicId = avatarPublicId;
     return this.usersRepository.save(user);
   }
+
+  async changeLanguage(userId: string, newLanguage: string): Promise<User> {
+    if (!newLanguage) {
+      throw new Error('Language not found.');
+    }
+
+    const user = await this.usersRepository.findOne({ where: { id: userId } });
+    if (!user) {
+      throw new Error('User not found.');
+    }
+
+    user.language = newLanguage;
+    return await this.usersRepository.save(user);
+  }
 }

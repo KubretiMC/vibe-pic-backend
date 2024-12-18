@@ -35,17 +35,17 @@ export class ImagesService {
     return updatedImagesData;
   }
 
-  private applyWeekFilter(date: Date, week: 'this' | 'last' | 'beforeLast'): { startDate: Date, endDate: Date } {
+  private applyWeekFilter(date: Date, week: 'THIS_WEEK' | 'LAST_WEEK' | 'WEEK_BEFORE_LAST'): { startDate: Date, endDate: Date } {
     let startDate: Date;
     let endDate: Date;
 
-    if (week === 'this') {
+    if (week === 'THIS_WEEK') {
       startDate = startOfWeek(date, { weekStartsOn: 1 });
       endDate = endOfWeek(date, { weekStartsOn: 1 });
-    } else if (week === 'last') {
+    } else if (week === 'LAST_WEEK') {
       startDate = startOfWeek(subWeeks(date, 1), { weekStartsOn: 1 });
       endDate = endOfWeek(subWeeks(date, 1), { weekStartsOn: 1 });
-    } else if (week === 'beforeLast') {
+    } else if (week === 'WEEK_BEFORE_LAST') {
       startDate = startOfWeek(subWeeks(date, 2), { weekStartsOn: 1 });
       endDate = endOfWeek(subWeeks(date, 2), { weekStartsOn: 1 });
     } else {
@@ -55,7 +55,7 @@ export class ImagesService {
     return { startDate, endDate };
   }
 
-  async findAll(week?: 'this' | 'last' | 'beforeLast', groupName?: string, mostLiked?: string): Promise<ImageDTO[]> {
+  async findAll(week?: 'THIS_WEEK' | 'LAST_WEEK' | 'WEEK_BEFORE_LAST', groupName?: string, mostLiked?: string): Promise<ImageDTO[]> {
     const today = new Date();
     const localToday = new Date(
       today.toLocaleString('en-US', { timeZone: 'Europe/Sofia' })
@@ -88,7 +88,7 @@ export class ImagesService {
     return this.transformImage(images);
   }
 
-  async findByGroup(groupName: string, week?: 'this' | 'last' | 'beforeLast', mostLiked?: string): Promise<ImageDTO[]> {
+  async findByGroup(groupName: string, week?: 'THIS_WEEK' | 'LAST_WEEK' | 'WEEK_BEFORE_LAST', mostLiked?: string): Promise<ImageDTO[]> {
     return this.findAll(week, groupName, mostLiked);
   }
 

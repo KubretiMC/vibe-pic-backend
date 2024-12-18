@@ -22,6 +22,9 @@ export class User {
   @Column({ nullable: true })
   avatarPublicId: string;
 
+  @Column()
+  language: string;
+
   @OneToMany(() => Like, (like) => like.user)
   likes: Like[];
 

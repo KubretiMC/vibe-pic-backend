@@ -18,7 +18,7 @@ export class ImagesController {
 
   @Get()
   async getAllImages(
-    @Query('week') week?: 'this' | 'last' | 'beforeLast',
+    @Query('week') week?: 'THIS_WEEK' | 'LAST_WEEK' | 'WEEK_BEFORE_LAST',
     @Query('groupName') groupName?: string,
     @Query('mostLiked') mostLiked?: string
   ): Promise<ImageDTO[]> {
@@ -28,7 +28,7 @@ export class ImagesController {
   @Get('group')
   async getImagesByGroup(
     @Query('groupName') groupName: string,
-    @Query('week') week?: 'this' | 'last' | 'beforeLast',
+    @Query('week') week?: 'THIS_WEEK' | 'LAST_WEEK' | 'WEEK_BEFORE_LAST',
     @Query('mostLiked') mostLiked?: string
   ): Promise<ImageDTO[]> {
     return this.imagesService.findByGroup(groupName, week, mostLiked);
