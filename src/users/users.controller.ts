@@ -1,4 +1,4 @@
-import { Controller, Get, Param, Post, UploadedFile, UseGuards, UseInterceptors, Request } from '@nestjs/common';
+import { Controller, Get, Post, UploadedFile, UseGuards, UseInterceptors, Request, Body } from '@nestjs/common';
 import { User } from './users.entity';
 import { UsersService } from './users.service';
 import { FileInterceptor } from '@nestjs/platform-express';
@@ -6,11 +6,17 @@ import cloudinary from 'cloudinary.config';
 import { UserMainInfoDTO } from './users.dto';
 import { uploadFileToCloudinary } from 'src/utils/utils';
 import { AuthGuard } from 'src/auth/auth.guard';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
 
 @Controller('users')
 @UseGuards(AuthGuard)
 export class UsersController {
-  constructor(private readonly usersService: UsersService) {}
+  constructor(
+    @InjectRepository(User)
+    private userRepository: Repository<User>,
+    private readonly usersService: UsersService
+  ) {}
 
   @Get()
   async getAllUsers(): Promise<User[]> {
@@ -29,7 +35,8 @@ export class UsersController {
     }
     return {
       username: user.username,
-      avatarUrl: user.avatarUrl
+      avatarUrl: user.avatarUrl,
+      language: user.language
     };
   }
   
@@ -69,4 +76,21 @@ export class UsersController {
     }
   }
   
+  @Post('change-language')
+  async changeLanguage(
+    @Body('language') newLanguage: string, 
+    @Request() req
+  ) {
+    const userId = req.user.userId;
+
+    try {
+      const updatedUser = await this.usersService.changeLanguage(userId, newLanguage);
+      return {
+        language: updatedUser.language,
+      };
+    } catch (error) {
+      console.error('Error updating language:', error);
+      throw new Error('Error updating language.');
+    }
+  }
 }

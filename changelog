@@ -1,3 +1,8 @@
+## [2.3.0] - 2024-12-18
+- added language to the user table
+- changed error message for the frontend to translate them properly
+- adapted filters based on the frontend translations
+
 ## [2.2.0] - 2024-12-12
 - added the uplodader avatar image to the image information
 - fixed getUserMainInfo endpoint endpoint 
