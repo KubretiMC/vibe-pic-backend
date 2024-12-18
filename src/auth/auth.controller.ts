@@ -21,7 +21,7 @@ export class AuthController {
   @Post('register')
   async register(@Body() body: { username: string; password: string, email: string }) {
     try {
-      const user = await this.authService.registerUser(body.username, body.password, body.email);
+      await this.authService.registerUser(body.username, body.password, body.email);
       return { message: 'Registration successful' };
     } catch (error) {
       throw new BadRequestException(error.message);
